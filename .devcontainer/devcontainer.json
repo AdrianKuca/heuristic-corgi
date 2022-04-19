@@ -14,7 +14,10 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [],
-	"runArgs": ["--gpus", "all"]
+	"runArgs": ["--gpus", "all"],
+
+	"mounts": ["source=/mnt/d/PythonoweLove/pieski,target=/workspace/,type=bind"],
+
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
