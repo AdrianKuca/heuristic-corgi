@@ -1,8 +1,8 @@
 # Processes all the images in the dataset, to a version with only edges, no colors and the same resolution.
 import json, os, random
 from multiprocessing.pool import Pool
-
-from paths import IMAGES_PATH, DATA_PATH, TRAINING_PATH
+from configuration.datasets import datasets
+from configuration.paths import IMAGES_PATH, DATA_PATH, TRAINING_PATH
 from PIL import Image, ImageFilter
 
 PIXELS = ["#", "O", "/", "-", " "]
@@ -45,17 +45,6 @@ def save(image, set_name, dir, breed, index):
     image.save(TRAINING_PATH(set_name) / dir / (breed + "_" + str(index) + ".jpg"))
 
 
-datasets = {
-    "dq30": {"double_filter": True, "quantize": True, "size": 30},
-    "dnq30": {"double_filter": True, "quantize": False, "size": 30},
-    "ndnq30": {"double_filter": False, "quantize": False, "size": 30},
-    "dq60": {"double_filter": True, "quantize": True, "size": 60},
-    "dnq60": {"double_filter": True, "quantize": False, "size": 60},
-    "ndnq60": {"double_filter": False, "quantize": False, "size": 60},
-    "dq120": {"double_filter": True, "quantize": True, "size": 120},
-    "dnq120": {"double_filter": True, "quantize": False, "size": 120},
-    "ndnq120": {"double_filter": False, "quantize": False, "size": 120},
-}
 for dataset_name in datasets.keys():
     prepare_dirs(dataset_name)
 
@@ -71,14 +60,28 @@ def worker(ctr_key_dogs):
     with Image.open(IMAGES_PATH / (key + ".jpg")) as im:
         for dog in dogs:
             grayscale = im.convert("L")
-            cropped = grayscale.crop(
-                (
-                    int(dog["xmin"]),
-                    int(dog["ymin"]),
-                    int(dog["xmax"]),
-                    int(dog["ymax"]),
+            xdiff = int(dog["xmax"]) - int(dog["xmin"])
+            ydiff = int(dog["ymax"]) - int(dog["ymin"])
+            # Crop to a square from top left corner
+            if xdiff < ydiff:
+                cropped = grayscale.crop(
+                    (
+                        int(dog["xmin"]),
+                        int(dog["ymin"]),
+                        int(dog["xmax"]),
+                        int(dog["ymin"]) + xdiff,
+                    )
                 )
-            )
+            else:
+                cropped = grayscale.crop(
+                    (
+                        int(dog["xmin"]),
+                        int(dog["ymin"]),
+                        int(dog["xmin"]) + ydiff,
+                        int(dog["ymax"]),
+                    )
+                )
+
             dir = (
                 "training" if random.random() > TESTING_TO_TRAINING_RATIO else "testing"
             )

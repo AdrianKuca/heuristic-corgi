@@ -1,7 +1,7 @@
 # Processes annotations into single dogs json.
 import os, json
 import xml.etree.ElementTree as ET
-from paths import ANNOTATIONS_PATH
+from configuration.paths import ANNOTATIONS_PATH
 
 
 def get_single_dogs(annotation_path):
