@@ -35,7 +35,7 @@ def get_dataset(path, train_or_test):
         images = np.load(images_path, allow_pickle=True)
         labels = np.load(labels_path, allow_pickle=True)
 
-    return images, labels
+    return images.astype(np.int8), labels
 
 
 if __name__ == "__main__":
