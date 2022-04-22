@@ -1,13 +1,14 @@
 datasets = {
-    "dq30x30": {"double_filter": True, "quantize": True, "size": 30},
-    "dnq30x30": {"double_filter": True, "quantize": False, "size": 30},
-    "ndnq30x30": {"double_filter": False, "quantize": False, "size": 30},
-    "dq60x60": {"double_filter": True, "quantize": True, "size": 60},
-    "dnq60x60": {"double_filter": True, "quantize": False, "size": 60},
-    "ndnq60x60": {"double_filter": False, "quantize": False, "size": 60},
-    "dq120x120": {"double_filter": True, "quantize": True, "size": 120},
-    "dnq120x120": {"double_filter": True, "quantize": False, "size": 120},
-    "ndnq120x120": {"double_filter": False, "quantize": False, "size": 120},
+    # "dq30x30": {"double_filter": True, "quantize": True, "size": 30},
+    # "dnq30x30": {"double_filter": True, "quantize": False, "size": 30},
+    # "ndnq30x30": {"double_filter": False, "quantize": False, "size": 30},
+    # "dq60x60": {"double_filter": True, "quantize": True, "size": 60},
+    # "dnq60x60": {"double_filter": True, "quantize": False, "size": 60},
+    # "ndnq60x60": {"double_filter": False, "quantize": False, "size": 60},
+    # "dq120x120": {"double_filter": True, "quantize": True, "size": 120},
+    # "dnq120x120": {"double_filter": True, "quantize": False, "size": 120},
+    # "ndnq120x120": {"double_filter": False, "quantize": False, "size": 120},
+    "nf60x60": {"raw": True, "quantize": False, "size": 60},
 }
 labels_in_dataset = [
     "affenpinscher",

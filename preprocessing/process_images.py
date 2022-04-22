@@ -16,17 +16,18 @@ def prepare_dirs(set_name):
     os.makedirs(TRAINING_PATH(set_name) / "testing", exist_ok=True)
 
 
-def process(image, double_filter=True, quantize=False, size=60):
+def process(image, raw=False, double_filter=True, quantize=False, size=60):
     copied = image.copy()  # copy because thumbnail() is IN PLACE
     copied.thumbnail((size, size))
     copied = copied.resize((size, size))  # stretch if smaller than size
-    copied = copied.filter(ImageFilter.FIND_EDGES)
-    if double_filter:
+    if not raw:
         copied = copied.filter(ImageFilter.FIND_EDGES)
-    if quantize:
-        (b,) = copied.split()
-        b = b.point(lambda i: i // 5 * 5)
-        copied = Image.merge("L", (b,))
+        if double_filter:
+            copied = copied.filter(ImageFilter.FIND_EDGES)
+        if quantize:
+            (b,) = copied.split()
+            b = b.point(lambda i: i // 5 * 5)
+            copied = Image.merge("L", (b,))
     return copied
 
 
