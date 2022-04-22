@@ -19,6 +19,7 @@ def prepare_dirs(set_name):
 def process(image, double_filter=True, quantize=False, size=60):
     copied = image.copy()  # copy because thumbnail() is IN PLACE
     copied.thumbnail((size, size))
+    copied = copied.resize((size, size))  # stretch if smaller than size
     copied = copied.filter(ImageFilter.FIND_EDGES)
     if double_filter:
         copied = copied.filter(ImageFilter.FIND_EDGES)
@@ -43,14 +44,6 @@ def print_as_ascii(image):
 
 def save(image, set_name, dir, breed, index):
     image.save(TRAINING_PATH(set_name) / dir / (breed + "_" + str(index) + ".jpg"))
-
-
-for dataset_name in datasets.keys():
-    prepare_dirs(dataset_name)
-
-with open("dog_annotations.json", "r") as f:
-    annotations = json.loads(f.read())
-ctr = 0
 
 
 def worker(ctr_key_dogs):
@@ -92,7 +85,16 @@ def worker(ctr_key_dogs):
             ctr += 1
 
 
-with Pool(processes=WORKERS) as pool:
-    pool.map(
-        worker, [(ctr, keydogs) for ctr, keydogs in enumerate(annotations.items())]
-    )
+if __name__ == "__main__":
+
+    for dataset_name in datasets.keys():
+        prepare_dirs(dataset_name)
+
+    with open("dog_annotations.json", "r") as f:
+        annotations = json.loads(f.read())
+    ctr = 0
+
+    with Pool(processes=WORKERS) as pool:
+        pool.map(
+            worker, [(ctr, keydogs) for ctr, keydogs in enumerate(annotations.items())]
+        )
