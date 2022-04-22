@@ -18,18 +18,19 @@ def get_single_dogs(annotation_path):
     return single_dogs
 
 
-dog_annotations = {}
+if __name__ == "__main__":
+    dog_annotations = {}
 
-# Get annotations as arrays of dicts where key is the fully qualifying doggers path
-for root, dirs, files in os.walk(ANNOTATIONS_PATH):
-    for breed_dir in dirs:
-        breed_dir_path = ANNOTATIONS_PATH / breed_dir
-        for root, dirs, files in os.walk(breed_dir_path):
-            for annotation_file in files:
-                annotation_path = breed_dir_path / annotation_file
-                dog_annotations[f"{breed_dir}/{annotation_file}"] = get_single_dogs(
-                    annotation_path
-                )
+    # Get annotations as arrays of dicts where key is the fully qualifying doggers path
+    for root, dirs, files in os.walk(ANNOTATIONS_PATH):
+        for breed_dir in dirs:
+            breed_dir_path = ANNOTATIONS_PATH / breed_dir
+            for root, dirs, files in os.walk(breed_dir_path):
+                for annotation_file in files:
+                    annotation_path = breed_dir_path / annotation_file
+                    dog_annotations[f"{breed_dir}/{annotation_file}"] = get_single_dogs(
+                        annotation_path
+                    )
 
-with open("dog_annotations.json", "w") as f:
-    f.write(json.dumps(dog_annotations))
+    with open("dog_annotations.json", "w") as f:
+        f.write(json.dumps(dog_annotations))
