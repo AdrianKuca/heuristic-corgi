@@ -27,7 +27,11 @@ def plot_history(history, model_info):
         y=history["test_acc"], label="Test accuracy", linestyle=":", color="red"
     )
     ax1.text(
-        0, history["test_acc"], history["test_acc"], fontsize=10, family="monospace"
+        0,
+        history["test_acc"],
+        "Test accuracy: " + history["test_acc"],
+        fontsize=10,
+        family="monospace",
     )
 
     ax2 = ax1.twinx()
@@ -35,7 +39,11 @@ def plot_history(history, model_info):
     ax2.plot(history["loss"], label="Loss", color="blue")
     ax2.axhline(y=history["test_loss"], label="Test loss", linestyle=":", color="blue")
     ax2.text(
-        0, history["test_loss"], history["test_loss"], fontsize=10, family="monospace"
+        0,
+        history["test_loss"],
+        "Test loss: " + history["test_loss"],
+        fontsize=10,
+        family="monospace",
     )
 
     ax1.legend(loc="center left")
