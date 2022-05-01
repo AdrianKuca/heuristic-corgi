@@ -1,9 +1,17 @@
 from pathlib import Path
+import os
 
-
-DATA_PATH = Path("/workspace/")
-ANNOTATIONS_PATH = Path("/workspace/annotations/Annotation/")
-IMAGES_PATH = Path("/workspace/images/Images/")
-TRAINING_PATH = lambda i: Path(f"/workspace/training_{i}/")
-CHECKPOINTS_PATH = lambda i: Path(f"/workspace/checkpoints_{i}/")
-RESULTS_PATH = lambda i: Path(f"/workspace/results_{i}/")
+if os.name == "posix":
+    DATA_PATH = Path("/workspace/")
+    ANNOTATIONS_PATH = Path(DATA_PATH, "annotations/Annotation/")
+    IMAGES_PATH = Path(DATA_PATH, "images/Images/")
+    TRAINING_PATH = lambda i: Path(DATA_PATH, f"training_{i}/")
+    CHECKPOINTS_PATH = lambda i: Path(DATA_PATH, f"checkpoints_{i}/")
+    RESULTS_PATH = lambda i: Path(DATA_PATH, f"results_{i}/")
+elif os.name == "nt":
+    DATA_PATH = Path("D:\PythonoweLove\pieski")
+    ANNOTATIONS_PATH = Path(DATA_PATH, "annotations/Annotation/")
+    IMAGES_PATH = Path(DATA_PATH, "images/Images/")
+    TRAINING_PATH = lambda i: Path(DATA_PATH, f"training_{i}/")
+    CHECKPOINTS_PATH = lambda i: Path(DATA_PATH, f"checkpoints_{i}/")
+    RESULTS_PATH = lambda i: Path(DATA_PATH, f"results_{i}/")
