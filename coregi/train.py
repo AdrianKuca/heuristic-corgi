@@ -1,6 +1,6 @@
 import json, os, shutil
 from datetime import datetime
-from model import get_model
+from coregi.model import get_model
 from preprocessing.data import get_dataset
 from matplotlib import pyplot as plt
 import tensorflow as tf
@@ -14,7 +14,6 @@ DATASET = f"nf{SIZE}x{SIZE}"
 NOW = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
 
 results_path = RESULTS_PATH(DATASET) / NOW
-checkpoints_path = RESULTS_PATH(DATASET) / "checkpoints"
 
 print("Getting training dataset")
 train_images, train_labels = get_dataset(TRAINING_PATH(DATASET), "training")
@@ -34,6 +33,10 @@ model.compile(
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
     metrics=["accuracy"],
 )
+
+os.makedirs(results_path, exist_ok=True)
+shutil.copyfile("./coregi/model.py", results_path / "model.py")
+checkpoints_path = results_path / "checkpoints"
 
 
 checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -62,5 +65,3 @@ jsoned_history = json.dumps(history.history, indent=4)
 os.makedirs(results_path, exist_ok=True)
 with open(results_path / "history.json", "w") as f:
     f.write(jsoned_history)
-
-shutil.copyfile("./coregi/model.py", results_path / "model.py")
