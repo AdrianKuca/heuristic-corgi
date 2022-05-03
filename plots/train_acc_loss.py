@@ -2,13 +2,8 @@ import matplotlib.pyplot as plt
 import os, json
 from pathlib import Path
 import importlib.util
-
-
-def get_model_info(model_module, size):
-    model_info = []
-    model = model_module.get_model(size)
-    model.summary(print_fn=lambda x: model_info.append(x))
-    return model_info
+from configuration.paths import DATA_PATH
+from plots.utils import get_model_info
 
 
 def plot_history(history, model_info):
@@ -29,7 +24,7 @@ def plot_history(history, model_info):
     ax1.text(
         0,
         history["test_acc"],
-        "Test accuracy: " + history["test_acc"],
+        "Test accuracy: " + str(history["test_acc"]),
         fontsize=10,
         family="monospace",
     )
@@ -41,7 +36,7 @@ def plot_history(history, model_info):
     ax2.text(
         0,
         history["test_loss"],
-        "Test loss: " + history["test_loss"],
+        "Test loss: " + str(history["test_loss"]),
         fontsize=10,
         family="monospace",
     )
@@ -56,7 +51,7 @@ def plot_history(history, model_info):
 if __name__ == "__main__":
 
     # Walk over all results
-    for root, dirs, files in os.walk("D:\PythonoweLove\pieski"):
+    for root, dirs, files in os.walk(DATA_PATH):
         for dir in dirs:
             if dir.startswith("results_"):
                 for datedir in os.listdir(Path(root, dir)):
